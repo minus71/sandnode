@@ -1,0 +1,20 @@
+console.info('server starting');
+var io = require('socket.io').listen(7180);
+
+io.sockets.on('connection', function (socket) {
+  // connection message
+  io.sockets.emit('this', { will: 'be received by everyone'});
+
+  socket.on('msg', function(from,msg){
+		console.info('message "'+msg+'" received from '+from);
+		msg=escape(msg);
+		io.sockets.emit('msg',from+' said: '+msg);
+	});
+
+  socket.on('disconntect',function(){
+     io.sockets.emit('user disconnected');
+  });
+  // 
+
+});
+
